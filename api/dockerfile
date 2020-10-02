@@ -1,0 +1,8 @@
+#Build runtime image
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+COPY . ./app
+ENV DOTNET_USE_POLLING_FILE_WATCHER 1
+WORKDIR /app
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
+ENTRYPOINT dotnet watch run --urls=http://+:5000
