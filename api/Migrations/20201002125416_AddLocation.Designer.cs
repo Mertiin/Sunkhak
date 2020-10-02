@@ -3,15 +3,17 @@ using System;
 using Api.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(BarContext))]
-    partial class BarContextModelSnapshot : ModelSnapshot
+    [Migration("20201002125416_AddLocation")]
+    partial class AddLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,42 +28,17 @@ namespace Api.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ChainId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("LocationId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChainId");
 
                     b.HasIndex("LocationId");
 
                     b.ToTable("Bars");
-                });
-
-            modelBuilder.Entity("Api.Context.Chain", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Chains");
                 });
 
             modelBuilder.Entity("Api.Context.Location", b =>
@@ -70,9 +47,6 @@ namespace Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
 
                     b.Property<decimal>("X")
                         .HasColumnType("numeric");
@@ -87,10 +61,6 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Context.Bar", b =>
                 {
-                    b.HasOne("Api.Context.Chain", "Chain")
-                        .WithMany("Bars")
-                        .HasForeignKey("ChainId");
-
                     b.HasOne("Api.Context.Location", "Location")
                         .WithMany("Bars")
                         .HasForeignKey("LocationId");
